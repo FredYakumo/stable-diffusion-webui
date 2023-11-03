@@ -40,3 +40,9 @@ notification.mp3
 /gui*
 /requirements_fred.txt
 /localizations/*
+start_config.json
+sd_webui_service_output.txt
+SDWebUIStartup.deps.json
+SDWebUIStartup.dll
+SDWebUIStartup.pdb
+SDWebUIStartup.runtimeconfig.json
