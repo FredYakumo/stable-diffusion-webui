@@ -46,3 +46,4 @@ SDWebUIStartup.deps.json
 SDWebUIStartup.dll
 SDWebUIStartup.pdb
 SDWebUIStartup.runtimeconfig.json
+sd_webui_service_output.log
