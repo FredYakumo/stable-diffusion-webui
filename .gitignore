@@ -37,3 +37,11 @@ notification.mp3
 /node_modules
 /package-lock.json
 /.coverage*
+/localizations/*
+start_config.json
+sd_webui_service_output.txt
+SDWebUIStartup.deps.json
+SDWebUIStartup.dll
+SDWebUIStartup.pdb
+SDWebUIStartup.runtimeconfig.json
+sd_webui_service_output.log
