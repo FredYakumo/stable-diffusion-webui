@@ -37,7 +37,6 @@ notification.mp3
 /node_modules
 /package-lock.json
 /.coverage*
-/gui*
 /requirements_fred.txt
 /localizations/*
 start_config.json
