@@ -13,7 +13,7 @@ from PIL import Image, PngImagePlugin  # noqa: F401
 from modules.call_queue import wrap_gradio_gpu_call, wrap_queued_call, wrap_gradio_call
 
 from modules import gradio_extensons  # noqa: F401
-from modules import sd_hijack, sd_models, script_callbacks, ui_extensions, deepbooru, extra_networks, ui_common, ui_postprocessing, progress, ui_loadsave, shared_items, ui_settings, timer, sysinfo, ui_checkpoint_merger, scripts, sd_samplers, processing, ui_extra_networks, ui_toprow
+from modules import sd_hijack, sd_models, script_callbacks, ui_extensions, deepbooru, extra_networks, ui_common, ui_postprocessing, progress, ui_loadsave, shared_items, ui_settings, timer, sysinfo, ui_checkpoint_merger, scripts, sd_samplers, processing, ui_extra_networks, ui_toprow, launch_utils
 from modules.ui_components import FormRow, FormGroup, ToolButton, FormHTML, InputAccordion, ResizeHandleRow
 from modules.paths import script_path
 from modules.ui_common import create_refresh_button
@@ -405,8 +405,8 @@ def create_ui():
 
             txt2img_outputs = [
                 output_panel.gallery,
+                output_panel.generation_info,
                 output_panel.infotext,
-                output_panel.html_info,
                 output_panel.html_log,
             ]
 
@@ -424,7 +424,7 @@ def create_ui():
             output_panel.button_upscale.click(
                 fn=wrap_gradio_gpu_call(modules.txt2img.txt2img_upscale, extra_outputs=[None, '', '']),
                 _js="submit_txt2img_upscale",
-                inputs=txt2img_inputs[0:1] + [output_panel.gallery, dummy_component] + txt2img_inputs[1:],
+                inputs=txt2img_inputs[0:1] + [output_panel.gallery, dummy_component, output_panel.generation_info] + txt2img_inputs[1:],
                 outputs=txt2img_outputs,
                 show_progress=False,
             )
@@ -437,8 +437,8 @@ def create_ui():
                 inputs=[dummy_component],
                 outputs=[
                     output_panel.gallery,
+                    output_panel.generation_info,
                     output_panel.infotext,
-                    output_panel.html_info,
                     output_panel.html_log,
                 ],
                 show_progress=False,
@@ -766,8 +766,8 @@ def create_ui():
                 ] + custom_inputs,
                 outputs=[
                     output_panel.gallery,
+                    output_panel.generation_info,
                     output_panel.infotext,
-                    output_panel.html_info,
                     output_panel.html_log,
                 ],
                 show_progress=False,
@@ -807,8 +807,8 @@ def create_ui():
                 inputs=[dummy_component],
                 outputs=[
                     output_panel.gallery,
+                    output_panel.generation_info,
                     output_panel.infotext,
-                    output_panel.html_info,
                     output_panel.html_log,
                 ],
                 show_progress=False,
@@ -1223,3 +1223,5 @@ def setup_ui_api(app):
     app.add_api_route("/internal/sysinfo", download_sysinfo, methods=["GET"])
     app.add_api_route("/internal/sysinfo-download", lambda: download_sysinfo(attachment=True), methods=["GET"])
 
+    import fastapi.staticfiles
+    app.mount("/webui-assets", fastapi.staticfiles.StaticFiles(directory=launch_utils.repo_dir('stable-diffusion-webui-assets')), name="webui-assets")
